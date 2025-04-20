@@ -61,4 +61,21 @@ public class QuestionService {
         choiceService.deleteChoicesByQuestionId(questionId);
         questionRepository.deleteById(questionId);
     }
+
+    public List<QuestionResponse> getQuestionsByTestId(UUID testId) {
+        return questionRepository.findAllByTestId(testId).stream()
+                .map(q -> {
+                    var choices = choiceService.getChoicesByQuestionId(q.getId());
+                    return questionMapper.toResponse(q, choices);
+                })
+                .toList();
+    }
+
+    @Transactional
+    public void deleteQuestionsByTestId(UUID testId) {
+        List<Question> questions = questionRepository.findAllByTestId(testId);
+        for (Question q : questions) {
+            deleteQuestion(q.getId());
+        }
+    }
 }
