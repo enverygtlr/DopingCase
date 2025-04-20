@@ -36,6 +36,14 @@ public class TestService {
         return testMapper.toResponse(test, questionResponses);
     }
 
+    public List<TestResponse> getAllTests() {
+        return testRepository.findAll().stream()
+                .map(test -> {
+                    var questions = questionService.getQuestionsByTestId(test.getId());
+                    return testMapper.toResponse(test, questions);
+                })
+                .toList();
+    }
 
     public TestResponse getTestById(UUID testId) {
         Test test = testRepository.findById(testId)
