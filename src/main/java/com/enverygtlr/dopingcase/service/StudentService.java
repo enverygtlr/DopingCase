@@ -4,7 +4,6 @@ import com.enverygtlr.dopingcase.domain.entity.Student;
 import com.enverygtlr.dopingcase.domain.request.StudentRequest;
 import com.enverygtlr.dopingcase.domain.response.StudentResponse;
 import com.enverygtlr.dopingcase.exception.NotFoundException;
-import com.enverygtlr.dopingcase.exception.custom.ExceptionInfo;
 import com.enverygtlr.dopingcase.mapper.StudentMapper;
 import com.enverygtlr.dopingcase.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +22,19 @@ public class StudentService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(NotFoundException::new);
 
-        return studentMapper.toStudentResponse(student);
+        return studentMapper.toResponse(student);
     }
 
     public List<StudentResponse> getStudents() {
         return studentRepository.findAll().stream()
-                .map(studentMapper::toStudentResponse)
+                .map(studentMapper::toResponse)
                 .toList();
     }
 
     public StudentResponse createStudent(StudentRequest request) {
         Student student = studentMapper.toEntity(request);
         Student saved = studentRepository.save(student);
-        return studentMapper.toStudentResponse(saved);
+        return studentMapper.toResponse(saved);
     }
 
     public StudentResponse updateStudent(UUID studentId, StudentRequest request) {
@@ -48,7 +47,7 @@ public class StudentService {
         existing.setLastName(request.lastName());
 
         Student updated = studentRepository.save(existing);
-        return studentMapper.toStudentResponse(updated);
+        return studentMapper.toResponse(updated);
     }
 
     public void deleteStudent(UUID studentId) {

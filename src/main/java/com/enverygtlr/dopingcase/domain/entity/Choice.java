@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class Choice extends BaseEntity {
 
     @Column(name = "question_id", nullable = false)
-    private Long questionId;
+    private UUID questionId;
 
     @Column
     private String content;
