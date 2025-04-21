@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables-sql
+      author: enver
+      changes:
+        - sqlFile:
+            path: 001-init-schema.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

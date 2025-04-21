@@ -1,13 +1,19 @@
 package com.enverygtlr.dopingcase.service;
 
 import com.enverygtlr.dopingcase.domain.entity.Question;
+import com.enverygtlr.dopingcase.domain.entity.Test;
 import com.enverygtlr.dopingcase.domain.request.QuestionRequest;
+import com.enverygtlr.dopingcase.domain.request.QuestionUpdateRequest;
 import com.enverygtlr.dopingcase.domain.response.ChoiceResponse;
 import com.enverygtlr.dopingcase.domain.response.QuestionResponse;
+import com.enverygtlr.dopingcase.domain.response.TestResponse;
 import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.mapper.QuestionMapper;
 import com.enverygtlr.dopingcase.repository.ChoiceRepository;
 import com.enverygtlr.dopingcase.repository.QuestionRepository;
+import com.enverygtlr.dopingcase.repository.TestRepository;
+import com.enverygtlr.dopingcase.validator.QuestionValidator;
+import com.enverygtlr.dopingcase.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +27,15 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+    private final QuestionValidator questionValidator;
     private final ChoiceService choiceService;
 
     @Transactional
     public QuestionResponse createQuestion(UUID testId, QuestionRequest request) {
+        questionValidator.validate(new QuestionValidator.Context(testId, request));
+
         Question question = questionMapper.toEntity(request);
+        question.setTestId(testId);
         question = questionRepository.save(question);
 
         List<ChoiceResponse> choices = choiceService.createChoices(question.getId(), request.choices());
@@ -43,10 +53,11 @@ public class QuestionService {
     }
 
     @Transactional
-    public QuestionResponse updateQuestion(UUID questionId, QuestionRequest request) {
+    public QuestionResponse updateQuestion(UUID questionId, QuestionUpdateRequest request) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(NotFoundException::new);
 
+        question.setTestId(request.testId());
         question.setContent(request.content());
         questionRepository.save(question);
 
