@@ -57,4 +57,10 @@ public class StudentService {
         studentRepository.deleteById(studentId);
     }
 
+    public void checkStudentExists(UUID studentId) {
+        if (!studentRepository.existsById(studentId)) {
+            throw new NotFoundException();
+        }
+    }
+
 }

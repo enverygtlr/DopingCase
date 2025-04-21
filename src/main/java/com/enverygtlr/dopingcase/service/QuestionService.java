@@ -28,10 +28,15 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
     private final QuestionValidator questionValidator;
+    private final TestRepository testRepository;
     private final ChoiceService choiceService;
 
     @Transactional
     public QuestionResponse createQuestion(UUID testId, QuestionRequest request) {
+        if(!testRepository.existsById(testId)) {
+            throw new NotFoundException();
+        };
+
         questionValidator.validate(new QuestionValidator.Context(testId, request));
 
         Question question = questionMapper.toEntity(request);
@@ -56,6 +61,10 @@ public class QuestionService {
     public QuestionResponse updateQuestion(UUID questionId, QuestionUpdateRequest request) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(NotFoundException::new);
+
+        if(!testRepository.existsById(request.testId())) {
+            throw new NotFoundException();
+        };
 
         question.setTestId(request.testId());
         question.setContent(request.content());

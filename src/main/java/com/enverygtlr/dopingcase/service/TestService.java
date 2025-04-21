@@ -76,4 +76,10 @@ public class TestService {
         testRepository.deleteById(testId);
     }
 
+    public void checkTestExists(UUID testId) {
+        if (!testRepository.existsById(testId)) {
+            throw new NotFoundException();
+        }
+    }
+
 }

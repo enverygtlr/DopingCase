@@ -1,8 +1,10 @@
 package com.enverygtlr.dopingcase.controller;
 
 
+import com.enverygtlr.dopingcase.domain.request.TestAttendanceRequest;
 import com.enverygtlr.dopingcase.domain.request.TestRequest;
 import com.enverygtlr.dopingcase.domain.response.TestResponse;
+import com.enverygtlr.dopingcase.service.TestAttendanceService;
 import com.enverygtlr.dopingcase.service.TestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class TestController {
 
     private final TestService testService;
+    private final TestAttendanceService testAttendanceService;
 
     @PostMapping
     public ResponseEntity<TestResponse> createTest(@RequestBody @Valid TestRequest request) {
@@ -47,4 +50,18 @@ public class TestController {
         testService.deleteTest(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/attend")
+    public ResponseEntity<Void> attendTest(@RequestBody @Valid TestAttendanceRequest request) {
+        testAttendanceService.attendTest(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/attend")
+    public ResponseEntity<Void> deleteAttendance(@RequestBody @Valid TestAttendanceRequest request) {
+        testAttendanceService.removeAttendance(request.studentId(), request.testId());
+        return ResponseEntity.ok().build();
+    }
+
+
 }

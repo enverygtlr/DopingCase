@@ -13,16 +13,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class QuestionValidator implements Validator<QuestionValidator.Context> {
 
-    private final TestRepository testRepository;
-
     @Override
     public void validate(Context context) {
         UUID testId = context.testId();
         QuestionRequest request = context.request();
-
-        if (!testRepository.existsById(testId)) {
-            throw new NotFoundException();
-        }
 
         long correctCount = request.choices().stream()
                 .filter(choice -> Boolean.TRUE.equals(choice.isCorrectChoice()))
