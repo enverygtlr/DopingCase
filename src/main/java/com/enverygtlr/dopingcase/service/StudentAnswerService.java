@@ -1,0 +1,64 @@
+package com.enverygtlr.dopingcase.service;
+
+import com.enverygtlr.dopingcase.domain.entity.StudentAnswer;
+import com.enverygtlr.dopingcase.domain.request.StudentAnswerRequest;
+import com.enverygtlr.dopingcase.exception.ValidationException;
+import com.enverygtlr.dopingcase.repository.StudentAnswerRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class StudentAnswerService {
+
+    private final StudentAnswerRepository studentAnswerRepository;
+    private final TestAttendanceService testAttendanceService;
+    private final QuestionService questionService;
+    private final ChoiceService choiceService;
+
+    @Transactional
+    public void submitAnswer(StudentAnswerRequest request) {
+        UUID studentId = request.studentId();
+        UUID testId = request.testId();
+        UUID questionId = request.questionId();
+        UUID choiceId = request.choiceId();
+
+        testAttendanceService.checkStudentAttendedTest(studentId, testId);
+        questionService.checkQuestionBelongsToTest(questionId, testId);
+        choiceService.checkChoiceBelongsToQuestion(choiceId, questionId);
+
+        if (studentAnswerRepository.existsByStudentIdAndQuestionId(studentId, questionId)) {
+            throw new ValidationException();
+        }
+
+        StudentAnswer answer = StudentAnswer.builder()
+                .studentId(studentId)
+                .testId(testId)
+                .questionId(questionId)
+                .choiceId(choiceId)
+                .build();
+
+        studentAnswerRepository.save(answer);
+    }
+
+    @Transactional
+    public void changeAnswer(StudentAnswerRequest request) {
+        UUID studentId = request.studentId();
+        UUID testId = request.testId();
+        UUID questionId = request.questionId();
+        UUID choiceId = request.choiceId();
+
+        testAttendanceService.checkStudentAttendedTest(studentId, testId);
+        questionService.checkQuestionBelongsToTest(questionId, testId);
+        choiceService.checkChoiceBelongsToQuestion(choiceId, questionId);
+
+        StudentAnswer existing = studentAnswerRepository.findByStudentIdAndQuestionId(studentId, questionId)
+                .orElseThrow(ValidationException::new);
+
+        existing.setChoiceId(choiceId);
+        studentAnswerRepository.save(existing);
+    }
+}

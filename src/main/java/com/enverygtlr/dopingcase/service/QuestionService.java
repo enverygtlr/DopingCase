@@ -8,6 +8,7 @@ import com.enverygtlr.dopingcase.domain.response.ChoiceResponse;
 import com.enverygtlr.dopingcase.domain.response.QuestionResponse;
 import com.enverygtlr.dopingcase.domain.response.TestResponse;
 import com.enverygtlr.dopingcase.exception.NotFoundException;
+import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.mapper.QuestionMapper;
 import com.enverygtlr.dopingcase.repository.ChoiceRepository;
 import com.enverygtlr.dopingcase.repository.QuestionRepository;
@@ -96,6 +97,14 @@ public class QuestionService {
         List<Question> questions = questionRepository.findAllByTestId(testId);
         for (Question q : questions) {
             deleteQuestion(q.getId());
+        }
+    }
+
+    public void checkQuestionBelongsToTest(UUID questionId, UUID testId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(NotFoundException::new);
+        if (!question.getTestId().equals(testId)) {
+            throw new ValidationException();
         }
     }
 }

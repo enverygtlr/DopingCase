@@ -52,4 +52,10 @@ public class TestAttendanceService {
         attendanceRepository.delete(attendance);
     }
 
+    public void checkStudentAttendedTest(UUID studentId, UUID testId) {
+        if (!attendanceRepository.existsByStudentIdAndTestId(studentId, testId)) {
+            throw new ValidationException();
+        }
+    }
+
 }

@@ -3,6 +3,8 @@ package com.enverygtlr.dopingcase.service;
 import com.enverygtlr.dopingcase.domain.entity.Choice;
 import com.enverygtlr.dopingcase.domain.request.ChoiceRequest;
 import com.enverygtlr.dopingcase.domain.response.ChoiceResponse;
+import com.enverygtlr.dopingcase.exception.NotFoundException;
+import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.mapper.ChoiceMapper;
 import com.enverygtlr.dopingcase.repository.ChoiceRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +42,13 @@ public class ChoiceService {
     @Transactional
     public void deleteChoicesByQuestionId(UUID questionId) {
         choiceRepository.deleteAllByQuestionId(questionId);
+    }
+
+    public void checkChoiceBelongsToQuestion(UUID choiceId, UUID questionId) {
+        Choice choice = choiceRepository.findById(choiceId)
+                .orElseThrow(NotFoundException::new);
+        if (!choice.getQuestionId().equals(questionId)) {
+            throw new ValidationException();
+        }
     }
 }
