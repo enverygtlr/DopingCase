@@ -51,4 +51,8 @@ public class ChoiceService {
             throw new ValidationException();
         }
     }
+
+    public List<Choice> getChoicesByIds(List<UUID> ids) {
+        return choiceRepository.findAllById(ids);
+    }
 }

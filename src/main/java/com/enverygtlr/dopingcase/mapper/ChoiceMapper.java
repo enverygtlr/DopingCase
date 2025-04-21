@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public interface ChoiceMapper {
 
     @Mapping(target = "choiceId", source = "id")
+
     ChoiceResponse toResponse(Choice choice);
 
     default List<Choice> toChoiceEntities(List<ChoiceRequest> requests, UUID questionId) {
@@ -24,7 +25,7 @@ public interface ChoiceMapper {
                         .content(r.content())
                         .isCorrectChoice(r.isCorrectChoice())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     List<ChoiceResponse> toResponseList(List<Choice> choices);

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -61,4 +62,10 @@ public class StudentAnswerService {
         existing.setChoiceId(choiceId);
         studentAnswerRepository.save(existing);
     }
+
+
+    public List<StudentAnswer> getAnswersByStudentAndTest(UUID studentId, UUID testId) {
+        return studentAnswerRepository.findAllByStudentIdAndTestId(studentId, testId);
+    }
+
 }

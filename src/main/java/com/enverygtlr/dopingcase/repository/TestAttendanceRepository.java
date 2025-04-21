@@ -11,4 +11,5 @@ public interface TestAttendanceRepository extends JpaRepository<TestAttendance, 
     boolean existsByStudentIdAndTestId(UUID studentId, UUID testId);
     Optional<TestAttendance> findByStudentIdAndTestId(UUID studentId, UUID testId);
     List<TestAttendance> findAllByTestId(UUID testId);
+    List<TestAttendance> findAllByStudentId(UUID studentId);
 }

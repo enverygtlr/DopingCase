@@ -33,7 +33,8 @@ public class TestService {
                 .map(question -> questionService.createQuestion(testId, question))
                 .toList();
 
-        return testMapper.toResponse(test, questionResponses);
+        TestResponse response = testMapper.toResponse(test, questionResponses);
+        return response;
     }
 
     public List<TestResponse> getAllTests() {

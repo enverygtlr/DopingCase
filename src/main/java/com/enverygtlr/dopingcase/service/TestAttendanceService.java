@@ -58,4 +58,10 @@ public class TestAttendanceService {
         }
     }
 
+    public List<UUID> getAttendedTestIds(UUID studentId) {
+        return attendanceRepository.findAllByStudentId(studentId).stream()
+                .map(TestAttendance::getTestId)
+                .toList();
+    }
+
 }
