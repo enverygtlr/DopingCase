@@ -52,7 +52,7 @@ The project uses a relational data model designed with entities like `Student`, 
 | PUT    | `/test/{id}`            | Update a test                |
 | DELETE | `/test/{id}`            | Delete a test                |
 
-#### Sample Request Body (Create/Update Test)
+#### Sample Request Body (Create Test)
 ```json
 {
   "title": "Sample Test",

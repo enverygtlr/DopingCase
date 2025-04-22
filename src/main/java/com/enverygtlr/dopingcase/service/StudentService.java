@@ -8,6 +8,7 @@ import com.enverygtlr.dopingcase.mapper.StudentMapper;
 import com.enverygtlr.dopingcase.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,12 +32,14 @@ public class StudentService {
                 .toList();
     }
 
+    @Transactional
     public StudentResponse createStudent(StudentRequest request) {
         Student student = studentMapper.toEntity(request);
         Student saved = studentRepository.save(student);
         return studentMapper.toResponse(saved);
     }
 
+    @Transactional
     public StudentResponse updateStudent(UUID studentId, StudentRequest request) {
         Student existing = studentRepository.findById(studentId)
                 .orElseThrow(() -> NotFoundException.forStudent(studentId.toString()));
@@ -50,6 +53,7 @@ public class StudentService {
         return studentMapper.toResponse(updated);
     }
 
+    @Transactional
     public void deleteStudent(UUID studentId) {
         if (!studentRepository.existsById(studentId)) {
             throw NotFoundException.forStudent(studentId.toString());
