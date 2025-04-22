@@ -1,14 +1,28 @@
 package com.enverygtlr.dopingcase.exception.custom;
 
-public abstract class CustomException extends RuntimeException {
-    private final ExceptionInfo info;
+import org.springframework.http.HttpStatus;
 
-    protected CustomException(ExceptionInfo info) {
-        super(info.getMessage());
-        this.info = info;
+public abstract class CustomException extends RuntimeException {
+    private final String title;
+    private final String message;
+    private final HttpStatus status;
+
+    protected CustomException(ExceptionInfo exceptionInfo, Object... args) {
+        super(String.format(exceptionInfo.getMessage(), args));
+        this.title = exceptionInfo.getTitle();
+        this.message = String.format(exceptionInfo.getMessage(), args);
+        this.status = exceptionInfo.getStatus();
     }
 
-    public ExceptionInfo getInfo() {
-        return info;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 }

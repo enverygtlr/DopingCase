@@ -3,6 +3,7 @@ package com.enverygtlr.dopingcase.service;
 import com.enverygtlr.dopingcase.domain.entity.TestAttendance;
 import com.enverygtlr.dopingcase.domain.request.TestAttendanceRequest;
 import com.enverygtlr.dopingcase.domain.response.StudentResponse;
+import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.mapper.StudentMapper;
 import com.enverygtlr.dopingcase.repository.StudentRepository;
@@ -30,7 +31,7 @@ public class TestAttendanceService {
         studentService.checkStudentExists(studentId);
 
         if (attendanceRepository.existsByStudentIdAndTestId(studentId, testId)) {
-            throw new ValidationException();
+            throw ValidationException.studentAlreadyAttended(studentId.toString(), testId.toString());
         }
 
         TestAttendance attendance = TestAttendance.builder()
@@ -47,14 +48,14 @@ public class TestAttendanceService {
         studentService.checkStudentExists(studentId);
 
         TestAttendance attendance = attendanceRepository.findByStudentIdAndTestId(studentId, testId)
-                .orElseThrow(() -> new ValidationException());
+                .orElseThrow(() -> new NotFoundException(testId.toString()));
 
         attendanceRepository.delete(attendance);
     }
 
     public void checkStudentAttendedTest(UUID studentId, UUID testId) {
         if (!attendanceRepository.existsByStudentIdAndTestId(studentId, testId)) {
-            throw new ValidationException();
+            throw ValidationException.testNotAttended(studentId.toString(), testId.toString());
         }
     }
 

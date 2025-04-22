@@ -22,7 +22,7 @@ public class StudentService {
 
     public StudentResponse getStudent(UUID studentId) {
         Student student = studentRepository.findById(studentId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> NotFoundException.forStudent(studentId.toString()));
 
         return studentMapper.toResponse(student);
     }
@@ -41,7 +41,7 @@ public class StudentService {
 
     public StudentResponse updateStudent(UUID studentId, StudentRequest request) {
         Student existing = studentRepository.findById(studentId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> NotFoundException.forStudent(studentId.toString()));
 
         existing.setStudentNo(request.studentNo());
         existing.setEmail(request.email());
@@ -54,14 +54,14 @@ public class StudentService {
 
     public void deleteStudent(UUID studentId) {
         if (!studentRepository.existsById(studentId)) {
-            throw new NotFoundException();
+            throw NotFoundException.forStudent(studentId.toString());
         }
         studentRepository.deleteById(studentId);
     }
 
     public void checkStudentExists(UUID studentId) {
         if (!studentRepository.existsById(studentId)) {
-            throw new NotFoundException();
+            throw NotFoundException.forStudent(studentId.toString());
         }
     }
 

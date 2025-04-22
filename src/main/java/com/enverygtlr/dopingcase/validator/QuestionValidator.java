@@ -23,7 +23,7 @@ public class QuestionValidator implements Validator<QuestionValidator.Context> {
                 .count();
 
         if (correctCount != 1) {
-            throw new ValidationException();
+            throw ValidationException.questionIsNotValid();
         }
     }
 

@@ -6,9 +6,9 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record ErrorResponse (
-        @NotNull LocalDateTime timestamp,
-        @NotNull String message,
-        @NotNull int httpCode
-) {
-}
+public record ErrorResponse(
+        LocalDateTime timestamp,
+        String title,
+        String message,
+        int httpCode
+) {}

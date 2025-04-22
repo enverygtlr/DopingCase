@@ -35,7 +35,7 @@ public class QuestionService {
     @Transactional
     public QuestionResponse createQuestion(UUID testId, QuestionRequest request) {
         if(!testRepository.existsById(testId)) {
-            throw new NotFoundException();
+            NotFoundException.forTest(testId.toString());
         };
 
         questionValidator.validate(new QuestionValidator.Context(testId, request));
@@ -51,7 +51,7 @@ public class QuestionService {
 
     public QuestionResponse getQuestionById(UUID questionId) {
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(questionId.toString()));
 
         List<ChoiceResponse> choices = choiceService.getChoicesByQuestionId(questionId);
 
@@ -61,10 +61,10 @@ public class QuestionService {
     @Transactional
     public QuestionResponse updateQuestion(UUID questionId, QuestionUpdateRequest request) {
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(questionId.toString()));
 
         if(!testRepository.existsById(request.testId())) {
-            throw new NotFoundException();
+            throw NotFoundException.forTest(request.testId().toString());
         };
 
         question.setTestId(request.testId());
@@ -102,9 +102,10 @@ public class QuestionService {
 
     public void checkQuestionBelongsToTest(UUID questionId, UUID testId) {
         Question question = questionRepository.findById(questionId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(questionId.toString()));
+
         if (!question.getTestId().equals(testId)) {
-            throw new ValidationException();
+            throw ValidationException.questionDoesNotBelong(questionId.toString(), testId.toString());
         }
     }
 }

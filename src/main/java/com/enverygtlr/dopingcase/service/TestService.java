@@ -60,7 +60,7 @@ public class TestService {
     @Cacheable(cacheNames = CacheNames.TEST_CACHE)
     public TestResponse getTestById(UUID testId) {
         Test test = testRepository.findById(testId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> NotFoundException.forTest(testId.toString()));
 
         List<QuestionResponse> questionResponses = questionService.getQuestionsByTestId(testId);
         return testMapper.toResponse(test, questionResponses);
@@ -70,7 +70,7 @@ public class TestService {
     @Transactional
     public TestResponse updateTest(UUID testId, TestRequest request) {
         Test test = testRepository.findById(testId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> NotFoundException.forTest(testId.toString()));
 
         test.setTitle(request.title());
         testRepository.save(test);
@@ -93,7 +93,7 @@ public class TestService {
 
     public void checkTestExists(UUID testId) {
         if (!testRepository.existsById(testId)) {
-            throw new NotFoundException();
+            throw NotFoundException.forTest(testId.toString());
         }
     }
 

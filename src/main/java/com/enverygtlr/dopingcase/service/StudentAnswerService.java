@@ -3,6 +3,7 @@ package com.enverygtlr.dopingcase.service;
 import com.enverygtlr.dopingcase.config.CacheNames;
 import com.enverygtlr.dopingcase.domain.entity.StudentAnswer;
 import com.enverygtlr.dopingcase.domain.request.StudentAnswerRequest;
+import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.repository.StudentAnswerRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class StudentAnswerService {
         choiceService.checkChoiceBelongsToQuestion(choiceId, questionId);
 
         if (studentAnswerRepository.existsByStudentIdAndQuestionId(studentId, questionId)) {
-            throw new ValidationException();
+            throw ValidationException.duplicateAnswer(studentId.toString(), questionId.toString());
         }
 
         StudentAnswer answer = StudentAnswer.builder()
@@ -61,7 +62,7 @@ public class StudentAnswerService {
         choiceService.checkChoiceBelongsToQuestion(choiceId, questionId);
 
         StudentAnswer existing = studentAnswerRepository.findByStudentIdAndQuestionId(studentId, questionId)
-                .orElseThrow(ValidationException::new);
+                .orElseThrow(() -> new NotFoundException(questionId.toString()));
 
         existing.setChoiceId(choiceId);
         studentAnswerRepository.save(existing);

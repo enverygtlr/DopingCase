@@ -46,9 +46,10 @@ public class ChoiceService {
 
     public void checkChoiceBelongsToQuestion(UUID choiceId, UUID questionId) {
         Choice choice = choiceRepository.findById(choiceId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(choiceId.toString()));
+
         if (!choice.getQuestionId().equals(questionId)) {
-            throw new ValidationException();
+            throw ValidationException.choiceDoesNotBelong(choiceId.toString(), questionId.toString());
         }
     }
 
