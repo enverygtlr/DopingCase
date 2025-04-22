@@ -2,11 +2,8 @@ package com.enverygtlr.dopingcase.service;
 
 import com.enverygtlr.dopingcase.domain.entity.TestAttendance;
 import com.enverygtlr.dopingcase.domain.request.TestAttendanceRequest;
-import com.enverygtlr.dopingcase.domain.response.StudentResponse;
 import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.exception.ValidationException;
-import com.enverygtlr.dopingcase.mapper.StudentMapper;
-import com.enverygtlr.dopingcase.repository.StudentRepository;
 import com.enverygtlr.dopingcase.repository.TestAttendanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

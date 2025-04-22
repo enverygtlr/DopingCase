@@ -21,7 +21,6 @@ public class StudentReportService {
     private final StudentService studentService;
     private final TestAttendanceService testAttendanceService;
     private final TestService testService;
-    private final QuestionService questionService;
     private final StudentAnswerService studentAnswerService;
     private final ChoiceService choiceService;
 

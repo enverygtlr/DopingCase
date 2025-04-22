@@ -1,20 +1,16 @@
 package com.enverygtlr.dopingcase.service;
 
 import com.enverygtlr.dopingcase.domain.entity.Question;
-import com.enverygtlr.dopingcase.domain.entity.Test;
 import com.enverygtlr.dopingcase.domain.request.QuestionRequest;
 import com.enverygtlr.dopingcase.domain.request.QuestionUpdateRequest;
 import com.enverygtlr.dopingcase.domain.response.ChoiceResponse;
 import com.enverygtlr.dopingcase.domain.response.QuestionResponse;
-import com.enverygtlr.dopingcase.domain.response.TestResponse;
 import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.mapper.QuestionMapper;
-import com.enverygtlr.dopingcase.repository.ChoiceRepository;
 import com.enverygtlr.dopingcase.repository.QuestionRepository;
 import com.enverygtlr.dopingcase.repository.TestRepository;
 import com.enverygtlr.dopingcase.validator.QuestionValidator;
-import com.enverygtlr.dopingcase.validator.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,10 +31,10 @@ public class QuestionService {
     @Transactional
     public QuestionResponse createQuestion(UUID testId, QuestionRequest request) {
         if(!testRepository.existsById(testId)) {
-            NotFoundException.forTest(testId.toString());
+            throw NotFoundException.forTest(testId.toString());
         };
 
-        questionValidator.validate(new QuestionValidator.Context(testId, request));
+        questionValidator.validate(new QuestionValidator.Context(request));
 
         Question question = questionMapper.toEntity(request);
         question.setTestId(testId);

@@ -2,7 +2,6 @@ package com.enverygtlr.dopingcase.config;
 
 import com.enverygtlr.dopingcase.domain.response.StudentReportResponse;
 import com.enverygtlr.dopingcase.domain.response.TestResponse;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,6 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
-import java.util.List;
 
 @EnableCaching
 @Configuration
