@@ -30,8 +30,6 @@ public class RedisConfig {
     @Value("${cache.config.reportTtl:120}")
     private int reportTtl;
 
-    private final ObjectMapper objectMapper;
-
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration

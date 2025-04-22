@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
         logger.warn("Database constraint violation: {}", ex.getMessage(), ex);
-        return buildErrorResponse("Constraint Error", ExceptionInfo.ENTITY_ALREADY_EXISTS.getMessage(), ExceptionInfo.ENTITY_ALREADY_EXISTS.getStatus());
+        return buildErrorResponse("Constraint Error", "Entity with unique field already exits", ExceptionInfo.ENTITY_ALREADY_EXISTS.getStatus());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

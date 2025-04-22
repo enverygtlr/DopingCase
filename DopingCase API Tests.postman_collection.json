@@ -1,0 +1,712 @@
+{
+	"info": {
+		"_postman_id": "1749a540-679e-41e6-afd8-9374fdf8c354",
+		"name": "DopingCase API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27448637"
+	},
+	"item": [
+		{
+			"name": "All Endpoints",
+			"item": [
+				{
+					"name": "Create Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"    var json = pm.response.json();",
+									"    pm.collectionVariables.set(\"studentId\", json.id);",
+									"    "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Enver\",\n  \"lastName\": \"Yiğitler\",\n  \"email\": \"enver@example.com\",\n  \"studentNo\": 12345\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/student",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Test with Question and Choices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"    var json = pm.response.json();",
+									"    pm.collectionVariables.set(\"testId\", json.testId);",
+									"    pm.collectionVariables.set(\"questionId\", json.questions[0].questionId);",
+									"    pm.collectionVariables.set(\"choiceId\", json.questions[0].choices[0].choiceId);",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Sample Test\",\n  \"questions\": [\n    {\n      \"content\": \"What is JVM?\",\n      \"choices\": [\n        {\n          \"content\": \"Java Virtual Machine\",\n          \"isCorrectChoice\": true\n        },\n        {\n          \"content\": \"Java Vendor Method\",\n          \"isCorrectChoice\": false\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attend Test",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"testId\": \"{{testId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/test/attend",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"attend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"testId\": \"{{testId}}\",\n  \"questionId\": \"{{questionId}}\",\n  \"choiceId\": \"{{choiceId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/answer/submit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"answer",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/report/{{studentId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"report",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Student Answer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"testId\": \"{{testId}}\",\n  \"questionId\": \"{{questionId}}\",\n  \"choiceId\": \"{{choiceId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/answer/change",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"answer",
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Test Attendance",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": \"{{studentId}}\",\n  \"testId\": \"{{testId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/test/attend",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"attend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"Name\",\n  \"email\": \"updated@example.com\",\n  \"studentNo\": 54321\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/student/{{studentId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/{{studentId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/student/{{studentId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"student",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tests (Paged)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Test Meta Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/test/meta",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"meta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Test By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/test/{{testId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"{{testId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Test",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Sample Test\",\n  \"questions\": [\n    {\n      \"content\": \"What is Java?\",\n      \"choices\": [\n        {\n          \"content\": \"A programming language\",\n          \"isCorrectChoice\": true\n        },\n        {\n          \"content\": \"A drink\",\n          \"isCorrectChoice\": false\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/test/{{testId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"{{testId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Test",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/test/{{testId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test",
+								"{{testId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Submit Answers and Get Report",
+			"item": [
+				{
+					"name": "1 - Get Students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"if (jsonData.length > 0) {",
+									"    pm.collectionVariables.set(\"studentId\", jsonData[0].id);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/student",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Get Tests",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"const firstTestId = response.content[0]?.testId;",
+									"",
+									"if (firstTestId) {",
+									"    pm.collectionVariables.set(\"testId\", firstTestId);",
+									"    console.log(\"First testId saved:\", firstTestId);",
+									"} else {",
+									"    console.warn(\"No testId found in response.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/test",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Attend Student to Test",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"studentId\": \"{{studentId}}\", \"testId\": \"{{testId}}\"}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/test/attend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"test",
+								"attend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Get Test and Save Questions/Choices",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let data = pm.response.json();",
+									"let questions = data.questions;",
+									"let qIds = [];",
+									"let cIds = [];",
+									"for (let i = 0; i < questions.length && i < 5; i++) {",
+									"  let q = questions[i];",
+									"  qIds.push(q.questionId);",
+									"  if (q.choices.length > 0) {",
+									"    let choice = q.choices[Math.floor(Math.random() * q.choices.length)];",
+									"    cIds.push(choice.choiceId);",
+									"  }",
+									"}",
+									"pm.collectionVariables.set(\"questionIds\", JSON.stringify(qIds));",
+									"pm.collectionVariables.set(\"choiceIds\", JSON.stringify(cIds));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/test/{{testId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"test",
+								"{{testId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Submit Answers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"let qIds = JSON.parse(pm.collectionVariables.get(\"questionIds\"));",
+									"let cIds = JSON.parse(pm.collectionVariables.get(\"choiceIds\"));",
+									"let index = pm.variables.get(\"answerIndex\") || 0;",
+									"if (index < qIds.length) {",
+									"  let body = {",
+									"    studentId: pm.collectionVariables.get(\"studentId\"),",
+									"    testId: pm.collectionVariables.get(\"testId\"),",
+									"    questionId: qIds[index],",
+									"    choiceId: cIds[index]",
+									"  };",
+									"  pm.request.body.raw = JSON.stringify(body);",
+									"  pm.variables.set(\"answerIndex\", parseInt(index) + 1);",
+									"} else {",
+									"  postman.setNextRequest(\"6 - Get Student Report\");",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "// This script runs in pre-request to auto-loop"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/answer/submit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"answer",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6 - Get Student Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/report/{{studentId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"report",
+								"{{studentId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/v1"
+		},
+		{
+			"key": "studentId",
+			"value": ""
+		},
+		{
+			"key": "testId",
+			"value": ""
+		},
+		{
+			"key": "questionId",
+			"value": ""
+		},
+		{
+			"key": "choiceId",
+			"value": ""
+		},
+		{
+			"key": "questionIds",
+			"value": ""
+		},
+		{
+			"key": "choiceIds",
+			"value": ""
+		},
+		{
+			"key": "answerIndex",
+			"value": ""
+		}
+	]
+}

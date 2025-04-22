@@ -67,7 +67,7 @@ public class TestController {
 
     @DeleteMapping("/attend")
     public ResponseEntity<Void> deleteAttendance(@RequestBody @Valid TestAttendanceRequest request) {
-        testAttendanceService.removeAttendance(request.studentId(), request.testId());
+        testAttendanceService.removeAttendance(request.testId(), request.studentId());
         return ResponseEntity.ok().build();
     }
 
