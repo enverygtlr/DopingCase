@@ -58,32 +58,36 @@ CREATE TABLE test_attendance (
 
 ALTER TABLE question
     ADD CONSTRAINT fk_question_test
-        FOREIGN KEY (test_id) REFERENCES test(id);
+        FOREIGN KEY (test_id) REFERENCES test(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE choice
     ADD CONSTRAINT fk_choice_question
-        FOREIGN KEY (question_id) REFERENCES question(id);
+        FOREIGN KEY (question_id) REFERENCES question(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE student_answer
     ADD CONSTRAINT fk_answer_student
-        FOREIGN KEY (student_id) REFERENCES student(id);
+        FOREIGN KEY (student_id) REFERENCES student(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE student_answer
     ADD CONSTRAINT fk_answer_test
-        FOREIGN KEY (test_id) REFERENCES test(id);
+        FOREIGN KEY (test_id) REFERENCES test(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE student_answer
     ADD CONSTRAINT fk_answer_question
-        FOREIGN KEY (question_id) REFERENCES question(id);
+        FOREIGN KEY (question_id) REFERENCES question(id)
+            ON DELETE CASCADE;
 
-ALTER TABLE student_answer
-    ADD CONSTRAINT fk_answer_choice
-        FOREIGN KEY (choice_id) REFERENCES choice(id);
 
 ALTER TABLE test_attendance
     ADD CONSTRAINT fk_attendance_student
-        FOREIGN KEY (student_id) REFERENCES student(id);
+        FOREIGN KEY (student_id) REFERENCES student(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE test_attendance
     ADD CONSTRAINT fk_attendance_test
-        FOREIGN KEY (test_id) REFERENCES test(id);
+        FOREIGN KEY (test_id) REFERENCES test(id)
+            ON DELETE CASCADE;

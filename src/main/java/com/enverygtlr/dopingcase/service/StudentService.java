@@ -1,5 +1,6 @@
 package com.enverygtlr.dopingcase.service;
 
+import com.enverygtlr.dopingcase.config.CacheNames;
 import com.enverygtlr.dopingcase.domain.entity.Student;
 import com.enverygtlr.dopingcase.domain.request.StudentRequest;
 import com.enverygtlr.dopingcase.domain.response.StudentResponse;
@@ -7,6 +8,7 @@ import com.enverygtlr.dopingcase.exception.NotFoundException;
 import com.enverygtlr.dopingcase.mapper.StudentMapper;
 import com.enverygtlr.dopingcase.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

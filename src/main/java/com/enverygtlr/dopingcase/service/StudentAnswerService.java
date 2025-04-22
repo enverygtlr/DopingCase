@@ -1,10 +1,12 @@
 package com.enverygtlr.dopingcase.service;
 
+import com.enverygtlr.dopingcase.config.CacheNames;
 import com.enverygtlr.dopingcase.domain.entity.StudentAnswer;
 import com.enverygtlr.dopingcase.domain.request.StudentAnswerRequest;
 import com.enverygtlr.dopingcase.exception.ValidationException;
 import com.enverygtlr.dopingcase.repository.StudentAnswerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ public class StudentAnswerService {
     private final QuestionService questionService;
     private final ChoiceService choiceService;
 
+    @CacheEvict(cacheNames = CacheNames.REPORT_CACHE, key = "#request.studentId()")
     @Transactional
     public void submitAnswer(StudentAnswerRequest request) {
         UUID studentId = request.studentId();
@@ -45,6 +48,7 @@ public class StudentAnswerService {
         studentAnswerRepository.save(answer);
     }
 
+    @CacheEvict(cacheNames = CacheNames.REPORT_CACHE, key = "#request.studentId()")
     @Transactional
     public void changeAnswer(StudentAnswerRequest request) {
         UUID studentId = request.studentId();

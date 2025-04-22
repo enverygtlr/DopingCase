@@ -3,11 +3,14 @@ package com.enverygtlr.dopingcase.controller;
 
 import com.enverygtlr.dopingcase.domain.request.TestAttendanceRequest;
 import com.enverygtlr.dopingcase.domain.request.TestRequest;
+import com.enverygtlr.dopingcase.domain.response.TestMetaInfo;
 import com.enverygtlr.dopingcase.domain.response.TestResponse;
 import com.enverygtlr.dopingcase.service.TestAttendanceService;
 import com.enverygtlr.dopingcase.service.TestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +33,13 @@ public class TestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TestResponse>> getAllTests() {
-        return ResponseEntity.ok(testService.getAllTests());
+    public ResponseEntity<Page<TestResponse>> getAllTestsPaged(Pageable pageable) {
+        return ResponseEntity.ok(testService.getAllTests(pageable));
+    }
+
+    @GetMapping("/meta")
+    public ResponseEntity<List<TestMetaInfo>> getAllTestMetaInfo() {
+        return ResponseEntity.ok(testService.getAllTestMetaInfos());
     }
 
     @GetMapping("/{id}")

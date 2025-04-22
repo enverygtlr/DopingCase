@@ -1,5 +1,6 @@
 package com.enverygtlr.dopingcase.service;
 
+import com.enverygtlr.dopingcase.config.CacheNames;
 import com.enverygtlr.dopingcase.domain.entity.Choice;
 import com.enverygtlr.dopingcase.domain.entity.Student;
 import com.enverygtlr.dopingcase.domain.entity.StudentAnswer;
@@ -8,6 +9,7 @@ import com.enverygtlr.dopingcase.domain.response.StudentResponse;
 import com.enverygtlr.dopingcase.domain.response.StudentTestPerformanceResponse;
 import com.enverygtlr.dopingcase.domain.response.TestResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class StudentReportService {
     private final StudentAnswerService studentAnswerService;
     private final ChoiceService choiceService;
 
+    @Cacheable(CacheNames.REPORT_CACHE)
     public StudentReportResponse getStudentReport(UUID studentId) {
         StudentResponse studentResponse = studentService.getStudent(studentId);
 
