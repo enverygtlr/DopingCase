@@ -554,7 +554,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"let data = pm.response.json();",
 									"let questions = data.questions;",
@@ -569,8 +568,11 @@
 									"  }",
 									"}",
 									"pm.collectionVariables.set(\"questionIds\", JSON.stringify(qIds));",
-									"pm.collectionVariables.set(\"choiceIds\", JSON.stringify(cIds));"
-								]
+									"pm.collectionVariables.set(\"choiceIds\", JSON.stringify(cIds));",
+									"pm.collectionVariables.set(\"answerIndex\", 0);"
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -600,11 +602,10 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"type": "text/javascript",
 								"exec": [
 									"let qIds = JSON.parse(pm.collectionVariables.get(\"questionIds\"));",
 									"let cIds = JSON.parse(pm.collectionVariables.get(\"choiceIds\"));",
-									"let index = pm.variables.get(\"answerIndex\") || 0;",
+									"let index = pm.collectionVariables.get(\"answerIndex\");",
 									"if (index < qIds.length) {",
 									"  let body = {",
 									"    studentId: pm.collectionVariables.get(\"studentId\"),",
@@ -613,11 +614,11 @@
 									"    choiceId: cIds[index]",
 									"  };",
 									"  pm.request.body.raw = JSON.stringify(body);",
-									"  pm.variables.set(\"answerIndex\", parseInt(index) + 1);",
-									"} else {",
-									"  postman.setNextRequest(\"6 - Get Student Report\");",
+									"  pm.collectionVariables.set(\"answerIndex\", parseInt(index) + 1);",
 									"}"
-								]
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -631,7 +632,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// This script runs in pre-request to auto-loop"
+							"raw": "// This script runs in pre-request to auto-loop. \n// Run 5 times to submit for 5 questions with random choices.\n// After 5 times body is not constructed."
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/v1/answer/submit",

@@ -7,10 +7,11 @@ import com.enverygtlr.dopingcase.domain.response.ChoiceResponse;
 import com.enverygtlr.dopingcase.domain.response.QuestionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface QuestionMapper {
 
     Question toEntity(QuestionRequest request);

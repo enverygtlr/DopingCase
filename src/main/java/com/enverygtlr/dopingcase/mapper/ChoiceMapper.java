@@ -9,7 +9,6 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ChoiceMapper {
